@@ -27,27 +27,28 @@ public class Main {
 
     try {
       // Worm up
-      ExperimentUtils.throughputExperiment(
-          ExperimentUtils.SharedVariableType.ATOMIC,
-          1,
-          1000,
-          100);
-      ExperimentUtils.throughputExperiment(
-          ExperimentUtils.SharedVariableType.TREE,
-          1,
-          1000,
-          100);
-      ExperimentUtils.latencyExperiment(
-          ExperimentUtils.SharedVariableType.ATOMIC,
-          1,
-          1000,
-          100);
-      ExperimentUtils.latencyExperiment(
-          ExperimentUtils.SharedVariableType.TREE,
-          1,
-          1000,
-          100);
-
+      for (int i = 1; i <= maxThreadNum / 2; i += hopSize) {
+        ExperimentUtils.throughputExperiment(
+            ExperimentUtils.SharedVariableType.ATOMIC,
+            i,
+            1000,
+            100);
+        ExperimentUtils.throughputExperiment(
+            ExperimentUtils.SharedVariableType.TREE,
+            i,
+            1000,
+            100);
+        ExperimentUtils.latencyExperiment(
+            ExperimentUtils.SharedVariableType.ATOMIC,
+            i,
+            1000,
+            100);
+        ExperimentUtils.latencyExperiment(
+            ExperimentUtils.SharedVariableType.TREE,
+            i,
+            1000,
+            100);
+      }
 
       Files.createFile(Paths.get(atomicThFileName));
       final BufferedWriter fw1 = new BufferedWriter(new FileWriter(atomicThFileName, true));
