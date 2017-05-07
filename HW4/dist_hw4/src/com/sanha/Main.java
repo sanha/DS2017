@@ -1,10 +1,9 @@
 package com.sanha;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import static java.lang.Thread.sleep;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Dist hw 4 - software combining tree.
@@ -12,69 +11,89 @@ import static java.lang.Thread.sleep;
 public class Main {
 
   public static void main(final String[] args) {
-
-    // Args check
-    if (args.length != 4) {
-      throw new RuntimeException("Invalid arguments. First arg: atomic / tree, second arg: thread num, " +
-          "third arg: # of increments per thread, fourth arg: delta per increment");
+    if (args.length != 3) {
+      System.err.println("Invalid arg: machine type, max thread number, hop size");
+      return;
     }
 
-    final String sharedVariableType = args[0];
-    final int threadNum = Integer.valueOf(args[1]);
-    final int incrementNumPerThread = Integer.valueOf(args[2]);
-    final int deltaPerIncrement = Integer.valueOf(args[3]);
-    final Long[] endTimes = new Long[threadNum];
+    final String machine = args[0];
+    final int maxThreadNum = Integer.valueOf(args[1]);
+    final int hopSize = Integer.valueOf(args[2]);
 
-    final ExecutorService executorService = Executors.newFixedThreadPool(threadNum);
-    final SharedVariable sharedVariable;
+    final String atomicThFileName = "./result/" + machine + "_atomic_throughput.txt";
+    final String treeThFileName = "./result/" + machine + "_tree_throughput.txt";
+    final String atomicLaFileName = "./result/" + machine + "_atomic_latency.txt";
+    final String treeLaFileName = "./result/" + machine + "_tree_latency.txt";
 
     try {
-      if (sharedVariableType.equals("atomic")) {
-        sharedVariable = new AtomicIntegerSharedVariable(0);
-      } else if (sharedVariableType.equals("tree")) {
-        sharedVariable = new CombiningTreeSharedVariable(0, 2 * threadNum);
-      } else {
-        throw new RuntimeException("Invalid first arg: atomic or tree");
+      // Worm up
+      ExperimentUtils.throughputExperiment(
+          ExperimentUtils.SharedVariableType.ATOMIC,
+          1,
+          1000,
+          100);
+      ExperimentUtils.throughputExperiment(
+          ExperimentUtils.SharedVariableType.TREE,
+          1,
+          1000,
+          100);
+      ExperimentUtils.latencyExperiment(
+          ExperimentUtils.SharedVariableType.ATOMIC,
+          1,
+          1000,
+          100);
+      ExperimentUtils.latencyExperiment(
+          ExperimentUtils.SharedVariableType.TREE,
+          1,
+          1000,
+          100);
+
+
+      Files.createFile(Paths.get(atomicThFileName));
+      final BufferedWriter fw1 = new BufferedWriter(new FileWriter(atomicThFileName, true));
+      Files.createFile(Paths.get(treeThFileName));
+      final BufferedWriter fw2 = new BufferedWriter(new FileWriter(treeThFileName, true));
+      Files.createFile(Paths.get(atomicLaFileName));
+      final BufferedWriter fw3 = new BufferedWriter(new FileWriter(atomicLaFileName, true));
+      Files.createFile(Paths.get(treeLaFileName));
+      final BufferedWriter fw4 = new BufferedWriter(new FileWriter(treeLaFileName, true));
+
+      for (int i = 1; i <= maxThreadNum; i += hopSize) {
+        final long duration1 = ExperimentUtils.throughputExperiment(
+            ExperimentUtils.SharedVariableType.ATOMIC,
+            i,
+            1000,
+            100);
+        fw1.write(i + "\t" + duration1 + "\n");
+        final long duration2 = ExperimentUtils.throughputExperiment(
+            ExperimentUtils.SharedVariableType.TREE,
+            i,
+            1000,
+            100);
+        fw2.write(i + "\t" + duration2 + "\n");
+        final long latency1 = ExperimentUtils.latencyExperiment(
+            ExperimentUtils.SharedVariableType.ATOMIC,
+            i,
+            1000,
+            100);
+        fw3.write(i + "\t" + latency1 + "\n");
+        final long latency2 = ExperimentUtils.latencyExperiment(
+            ExperimentUtils.SharedVariableType.TREE,
+            i,
+            1000,
+            100);
+        fw4.write(i + "\t" + latency2 + "\n");
       }
-
-      final Future[] futures = new Future[threadNum];
-
-      final long startTime = System.nanoTime();
-
-      // Run threads
-      for (int itr = 0; itr < threadNum; itr++) {
-        final int threadId = itr;
-        futures[itr] = executorService.submit(new Runnable() {
-          public void run() {
-            try {
-              for (int i = 0; i < incrementNumPerThread; i++) {
-                sharedVariable.getAndAdd(threadId, deltaPerIncrement);
-              }
-              endTimes[threadId] = System.nanoTime();
-            } catch (final Exception e) {
-              e.printStackTrace();
-            }
-          }
-        });
-      }
-
-      long lastEndTime = Long.MIN_VALUE;
-      for (int i = 0; i < threadNum; i++) {
-        final Future future = futures[i];
-        while (!future.isDone()) {
-          sleep(1000);
-        }
-        final long endTimeOfFuture = endTimes[i];
-        if (lastEndTime < endTimeOfFuture) {
-          lastEndTime = endTimeOfFuture;
-        }
-      }
-
-      System.out.println("Final result: " + sharedVariable.get() + ", consumed " + (lastEndTime - startTime) + " ns.");
+      fw1.flush();
+      fw2.flush();
+      fw3.flush();
+      fw4.flush();
+      fw1.close();
+      fw2.close();
+      fw3.close();
+      fw4.close();
     } catch (final Exception e) {
       e.printStackTrace();
-    } finally {
-      executorService.shutdown();
     }
   }
 }

@@ -4,7 +4,7 @@ package com.sanha;
  * This class represents a node of software combining tree.
  */
 public final class Node {
-  enum CStatus{
+  private enum CStatus{
     IDLE, FIRST, SECOND, RESULT, ROOT
   };
 
