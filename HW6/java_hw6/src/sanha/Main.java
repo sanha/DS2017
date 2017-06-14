@@ -11,17 +11,18 @@ import java.nio.file.Paths;
 public class Main {
 
   public static void main(final String[] args) {
-    if (args.length != 3) {
-      System.err.println("Invalid arg: rtm (true / false), max thread number, hop size");
+    if (args.length != 4) {
+      System.err.println("Invalid arg: rtm (true / false), machine, max thread number, hop size");
       return;
     }
 
     final boolean rtm = Boolean.valueOf(args[0]);
-    final int maxThreadNum = Integer.valueOf(args[1]);
-    final int hopSize = Integer.valueOf(args[2]);
+    final String machine = args[1];
+    final int maxThreadNum = Integer.valueOf(args[2]);
+    final int hopSize = Integer.valueOf(args[3]);
 
-    final String treeThFileName = "./result/" + rtm + "_tree_throughput.txt";
-    final String treeLaFileName = "./result/" + rtm + "_tree_latency.txt";
+    final String treeThFileName = "./result/" + machine + "_" + rtm + "_tree_throughput.txt";
+    final String treeLaFileName = "./result/" + machine + "_" + rtm + "_tree_latency.txt";
 
     try {
       // Worm up
