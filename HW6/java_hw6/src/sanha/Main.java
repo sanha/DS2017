@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 public class Main {
 
   public static void main(final String[] args) {
-    if (args.length != 4) {
+    if (args.length != 5) {
       System.err.println("Invalid arg: rtm (true / false), option (1, 2), machine, max thread number, hop size");
       return;
     }

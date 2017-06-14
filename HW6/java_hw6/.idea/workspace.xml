@@ -21,11 +21,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/sanha/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="425">
-              <caret line="25" column="79" lean-forward="false" selection-start-line="25" selection-start-column="79" selection-end-line="25" selection-end-column="79" />
+            <state relative-caret-position="221">
+              <caret line="13" column="24" lean-forward="false" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -63,7 +63,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RtmCombiningTreeSharedVariable2.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RtmCombiningTreeSharedVariable2.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sanha/rtm2/rtm/RtmCombiningTreeSharedVariable2.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="1071">
@@ -147,9 +147,9 @@
         <option value="$PROJECT_DIR$/src/sanha/rtm2/rtm/RtmNode.java" />
         <option value="$PROJECT_DIR$/src/sanha/rtm2/rtm/RtmCombiningTreeSharedVariable.java" />
         <option value="$PROJECT_DIR$/src/sanha/ExperimentUtils.java" />
-        <option value="$PROJECT_DIR$/src/sanha/Main.java" />
         <option value="$PROJECT_DIR$/src/sanha/rtm2/rtm/RtmCombiningTreeSharedVariable2.java" />
         <option value="$PROJECT_DIR$/src/sanha/rtm2/rtm/RtmNode2.java" />
+        <option value="$PROJECT_DIR$/src/sanha/Main.java" />
       </list>
     </option>
   </component>
@@ -683,16 +683,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sanha/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="25" column="79" lean-forward="false" selection-start-line="25" selection-start-column="79" selection-end-line="25" selection-end-column="79" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sanha/rtm2/rtm/RtmNode2.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="908">
@@ -706,6 +696,16 @@
         <state relative-caret-position="1071">
           <caret line="67" column="3" lean-forward="false" selection-start-line="67" selection-start-column="3" selection-end-line="67" selection-end-column="3" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/sanha/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="24" lean-forward="false" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
