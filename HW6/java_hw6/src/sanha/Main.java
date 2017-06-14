@@ -31,16 +31,29 @@ public class Main {
       // Worm up
       for (int i = 1; i <= maxThreadNum / 2; i += hopSize) {
         if (rtm) {
-          ExperimentUtils.throughputExperiment(
-              ExperimentUtils.SharedVariableType.RTM_TREE,
-              i,
-              1000,
-              100);
-          ExperimentUtils.latencyExperiment(
-              ExperimentUtils.SharedVariableType.RTM_TREE,
-              i,
-              1000,
-              100);
+          if (option == 1) {
+            ExperimentUtils.throughputExperiment(
+                ExperimentUtils.SharedVariableType.RTM_TREE,
+                i,
+                1000,
+                100);
+            ExperimentUtils.latencyExperiment(
+                ExperimentUtils.SharedVariableType.RTM_TREE,
+                i,
+                1000,
+                100);
+          } else {
+            ExperimentUtils.throughputExperiment(
+                ExperimentUtils.SharedVariableType.RTM_TREE_2,
+                i,
+                1000,
+                100);
+            ExperimentUtils.latencyExperiment(
+                ExperimentUtils.SharedVariableType.RTM_TREE_2,
+                i,
+                1000,
+                100);
+          }
         } else {
           ExperimentUtils.throughputExperiment(
               ExperimentUtils.SharedVariableType.TREE,
@@ -62,24 +75,45 @@ public class Main {
 
       for (int i = 1; i <= maxThreadNum; i += hopSize) {
         if (rtm) {
-          long duration = 0;
-          for (int j = 0 ; j < TRIAL; j ++) {
-            duration += ExperimentUtils.throughputExperiment(
-                ExperimentUtils.SharedVariableType.RTM_TREE,
-                i,
-                1000,
-                100);
+          if (option == 1) {
+            long duration = 0;
+            for (int j = 0; j < TRIAL; j++) {
+              duration += ExperimentUtils.throughputExperiment(
+                  ExperimentUtils.SharedVariableType.RTM_TREE,
+                  i,
+                  1000,
+                  100);
+            }
+            fw1.write(i + "\t" + (duration / TRIAL) + "\n");
+            long latency = 0;
+            for (int j = 0; j < TRIAL; j++) {
+              latency += ExperimentUtils.latencyExperiment(
+                  ExperimentUtils.SharedVariableType.RTM_TREE,
+                  i,
+                  1000,
+                  100);
+            }
+            fw2.write(i + "\t" + (latency / TRIAL) + "\n");
+          } else {
+            long duration = 0;
+            for (int j = 0; j < TRIAL; j++) {
+              duration += ExperimentUtils.throughputExperiment(
+                  ExperimentUtils.SharedVariableType.RTM_TREE_2,
+                  i,
+                  1000,
+                  100);
+            }
+            fw1.write(i + "\t" + (duration / TRIAL) + "\n");
+            long latency = 0;
+            for (int j = 0; j < TRIAL; j++) {
+              latency += ExperimentUtils.latencyExperiment(
+                  ExperimentUtils.SharedVariableType.RTM_TREE_2,
+                  i,
+                  1000,
+                  100);
+            }
+            fw2.write(i + "\t" + (latency / TRIAL) + "\n");
           }
-          fw1.write(i + "\t" + (duration / TRIAL) + "\n");
-          long latency = 0;
-          for (int j = 0 ; j < TRIAL; j ++) {
-            latency += ExperimentUtils.latencyExperiment(
-                ExperimentUtils.SharedVariableType.RTM_TREE,
-                i,
-                1000,
-                100);
-          }
-          fw2.write(i + "\t" + (latency / TRIAL) + "\n");
         } else {
           long duration = 0;
           for (int j = 0 ; j < TRIAL; j ++) {
