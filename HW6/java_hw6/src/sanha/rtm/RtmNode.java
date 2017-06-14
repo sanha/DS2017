@@ -1,50 +1,41 @@
-package sanha;
+package sanha.rtm;
 
 /**
- * This class represents a node of software combining tree.
+ * This class represents a node of software combining tree using Restricted Transactional Memory.
  */
-public final class Node {
+public final class RtmNode {
   private enum CStatus{
     IDLE, FIRST, SECOND, RESULT, ROOT
   };
 
-  private boolean locked;
   private CStatus cStatus;
   private int firstValue, secondValue;
   private int result;
-  private final Node parent;
+  private final RtmNode parent;
 
   // Constructor for root node
-  public Node(final int initialValue) {
+  public RtmNode(final int initialValue) {
     this.cStatus = CStatus.ROOT;
-    this.locked = false;
     this.parent = null;
     this.result = initialValue;
   }
 
   // Constructor for non-root node
-  public Node(final Node parent) {
+  public RtmNode(final RtmNode parent) {
     this.parent = parent;
     this.cStatus = CStatus.IDLE;
-    locked = false;
     this.firstValue = 0;
     this.secondValue = 0;
     this.result = 0;
   }
 
-  public synchronized boolean precombine() {
-    try {
-      while (locked) wait();
-    } catch (final InterruptedException e) {
-      e.printStackTrace();
-    }
+  public boolean precombine() {
 
     switch (cStatus) {
       case IDLE:
         cStatus = CStatus.FIRST;
         return true;
       case FIRST:
-        locked = true;
         cStatus = CStatus.SECOND;
         return false;
       case ROOT:
@@ -54,13 +45,7 @@ public final class Node {
     }
   }
 
-  public synchronized int combine(final int combined) {
-    try {
-      while (locked) wait();
-    } catch (final InterruptedException e) {
-      e.printStackTrace();
-    }
-    locked = true;
+  public int combine(final int combined) {
     firstValue = combined;
 
     switch (cStatus) {
@@ -73,7 +58,7 @@ public final class Node {
     }
   }
 
-  public synchronized int operation(final int combined) {
+  public int operation(final int combined) {
     switch (cStatus) {
       case ROOT:
         final int prior = result;
@@ -81,15 +66,6 @@ public final class Node {
         return prior;
       case SECOND:
         secondValue = combined;
-        locked = false;
-        notifyAll();
-        try {
-          while (cStatus != CStatus.RESULT) wait();
-        } catch (final InterruptedException e) {
-          e.printStackTrace();
-        }
-        locked = false;
-        notifyAll();
         cStatus = CStatus.IDLE;
         return result;
       default:
@@ -97,11 +73,10 @@ public final class Node {
     }
   }
 
-  public synchronized void distribute(final int prior) {
+  public void distribute(final int prior) {
     switch (cStatus) {
       case FIRST:
         cStatus = CStatus.IDLE;
-        locked = false;
         break;
       case SECOND:
         result = prior + firstValue;
@@ -110,10 +85,9 @@ public final class Node {
       default:
         throw new RuntimeException("unexpected RtmNode state during distribution: " + cStatus);
     }
-    notifyAll();
   }
 
-  public Node getParent() {
+  public RtmNode getParent() {
     return parent;
   }
 
