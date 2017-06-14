@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="java_hw6:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/java_hw6_jar</output-path>
+    <root id="archive" name="java_hw6.jar">
+      <element id="module-output" name="java_hw6" />
+    </root>
+  </artifact>
+</component>
