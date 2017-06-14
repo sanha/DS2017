@@ -1,6 +1,7 @@
 package sanha;
 
 import sanha.rtm.RtmCombiningTreeSharedVariable;
+import sanha.rtm2.rtm.RtmCombiningTreeSharedVariable2;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,7 +16,7 @@ import static java.lang.Thread.sleep;
  */
 public final class ExperimentUtils {
   public enum SharedVariableType {
-    ATOMIC, TREE, RTM_TREE
+    ATOMIC, TREE, RTM_TREE, RTM_TREE_2
   };
 
   // Test throughput
@@ -38,6 +39,9 @@ public final class ExperimentUtils {
           break;
         case RTM_TREE:
           sharedVariable = new RtmCombiningTreeSharedVariable(0, 2 * threadNum);
+          break;
+        case RTM_TREE_2:
+          sharedVariable = new RtmCombiningTreeSharedVariable2(0, 2 * threadNum);
           break;
         default:
           throw new RuntimeException("Invalid first arg: atomic or tree");
@@ -107,6 +111,9 @@ public final class ExperimentUtils {
           break;
         case RTM_TREE:
           sharedVariable = new RtmCombiningTreeSharedVariable(0, 2 * threadNum);
+          break;
+        case RTM_TREE_2:
+          sharedVariable = new RtmCombiningTreeSharedVariable2(0, 2 * threadNum);
           break;
         default:
           throw new RuntimeException("Invalid first arg: atomic or tree");

@@ -50,7 +50,7 @@ public final class Node {
       case ROOT:
         return false;
       default:
-        throw new RuntimeException("unexpected RtmNode state during pre-combining: " + cStatus);
+        throw new RuntimeException("unexpected RtmNode2 state during pre-combining: " + cStatus);
     }
   }
 
@@ -69,7 +69,7 @@ public final class Node {
       case SECOND:
         return firstValue + secondValue;
       default:
-        throw new RuntimeException("unexpected RtmNode state during combining: " + cStatus);
+        throw new RuntimeException("unexpected RtmNode2 state during combining: " + cStatus);
     }
   }
 
@@ -93,7 +93,7 @@ public final class Node {
         cStatus = CStatus.IDLE;
         return result;
       default:
-        throw new RuntimeException("unexpected RtmNode state during operation: " + cStatus);
+        throw new RuntimeException("unexpected RtmNode2 state during operation: " + cStatus);
     }
   }
 
@@ -108,7 +108,7 @@ public final class Node {
         cStatus = CStatus.RESULT;
         break;
       default:
-        throw new RuntimeException("unexpected RtmNode state during distribution: " + cStatus);
+        throw new RuntimeException("unexpected RtmNode2 state during distribution: " + cStatus);
     }
     notifyAll();
   }

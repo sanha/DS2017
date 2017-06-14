@@ -1,9 +1,9 @@
-package sanha.rtm;
+package sanha.rtm2.rtm;
 
 /**
  * This class represents a node of software combining tree using Restricted Transactional Memory.
  */
-public final class RtmNode {
+public final class RtmNode2 {
   private enum CStatus{
     IDLE, FIRST, SECOND, RESULT, ROOT
   };
@@ -11,17 +11,17 @@ public final class RtmNode {
   private CStatus cStatus;
   private int firstValue, secondValue;
   private int result;
-  private final RtmNode parent;
+  private final RtmNode2 parent;
 
   // Constructor for root node
-  public RtmNode(final int initialValue) {
+  public RtmNode2(final int initialValue) {
     this.cStatus = CStatus.ROOT;
     this.parent = null;
     this.result = initialValue;
   }
 
   // Constructor for non-root node
-  public RtmNode(final RtmNode parent) {
+  public RtmNode2(final RtmNode2 parent) {
     this.parent = parent;
     this.cStatus = CStatus.IDLE;
     this.firstValue = 0;
@@ -29,7 +29,7 @@ public final class RtmNode {
     this.result = 0;
   }
 
-  public boolean precombine() {
+  public synchronized boolean precombine() {
 
     switch (cStatus) {
       case IDLE:
@@ -45,7 +45,7 @@ public final class RtmNode {
     }
   }
 
-  public int combine(final int combined) {
+  public synchronized int combine(final int combined) {
     firstValue = combined;
 
     switch (cStatus) {
@@ -58,7 +58,7 @@ public final class RtmNode {
     }
   }
 
-  public int operation(final int combined) {
+  public synchronized int operation(final int combined) {
     switch (cStatus) {
       case ROOT:
         final int prior = result;
@@ -73,7 +73,7 @@ public final class RtmNode {
     }
   }
 
-  public void distribute(final int prior) {
+  public synchronized void distribute(final int prior) {
     switch (cStatus) {
       case FIRST:
         cStatus = CStatus.IDLE;
@@ -87,7 +87,7 @@ public final class RtmNode {
     }
   }
 
-  public RtmNode getParent() {
+  public RtmNode2 getParent() {
     return parent;
   }
 
