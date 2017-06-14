@@ -9,8 +9,10 @@ import java.nio.file.Paths;
  * Dist hw 6 - default software combining tree.
  */
 public class Main {
+  final static int TRIAL = 5;
 
   public static void main(final String[] args) {
+
     if (args.length != 5) {
       System.err.println("Invalid arg: rtm (true / false), option (1, 2), machine, max thread number, hop size");
       return;
@@ -60,31 +62,43 @@ public class Main {
 
       for (int i = 1; i <= maxThreadNum; i += hopSize) {
         if (rtm) {
-          final long duration = ExperimentUtils.throughputExperiment(
-              ExperimentUtils.SharedVariableType.RTM_TREE,
-              i,
-              1000,
-              100);
-          fw1.write(i + "\t" + duration + "\n");
-          final long latency = ExperimentUtils.latencyExperiment(
-              ExperimentUtils.SharedVariableType.RTM_TREE,
-              i,
-              1000,
-              100);
-          fw2.write(i + "\t" + latency + "\n");
+          long duration = 0;
+          for (int j = 0 ; j < TRIAL; j ++) {
+            duration += ExperimentUtils.throughputExperiment(
+                ExperimentUtils.SharedVariableType.RTM_TREE,
+                i,
+                1000,
+                100);
+          }
+          fw1.write(i + "\t" + (duration / TRIAL) + "\n");
+          long latency = 0;
+          for (int j = 0 ; j < TRIAL; j ++) {
+            latency += ExperimentUtils.latencyExperiment(
+                ExperimentUtils.SharedVariableType.RTM_TREE,
+                i,
+                1000,
+                100);
+          }
+          fw2.write(i + "\t" + (latency / TRIAL) + "\n");
         } else {
-          final long duration = ExperimentUtils.throughputExperiment(
-              ExperimentUtils.SharedVariableType.TREE,
-              i,
-              1000,
-              100);
-          fw1.write(i + "\t" + duration + "\n");
-          final long latency = ExperimentUtils.latencyExperiment(
-              ExperimentUtils.SharedVariableType.TREE,
-              i,
-              1000,
-              100);
-          fw2.write(i + "\t" + latency + "\n");
+          long duration = 0;
+          for (int j = 0 ; j < TRIAL; j ++) {
+            duration += ExperimentUtils.throughputExperiment(
+                ExperimentUtils.SharedVariableType.TREE,
+                i,
+                1000,
+                100);
+          }
+          fw1.write(i + "\t" + (duration / TRIAL) + "\n");
+          long latency = 0;
+          for (int j = 0 ; j < TRIAL; j ++) {
+            latency += ExperimentUtils.latencyExperiment(
+                ExperimentUtils.SharedVariableType.TREE,
+                i,
+                1000,
+                100);
+          }
+          fw2.write(i + "\t" + (latency / TRIAL) + "\n");
         }
       }
       fw1.flush();
