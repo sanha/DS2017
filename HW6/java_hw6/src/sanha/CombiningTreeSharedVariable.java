@@ -34,7 +34,7 @@ public final class CombiningTreeSharedVariable implements SharedVariable {
   @Override
   public int getAndAdd(final int threadId,
                        final int delta) {
-    final Stack<Node> stack = new Stack();
+    final Stack<Node> stack = new Stack<>();
     final Node myLeaf = leaf[threadId/2];
 
     // Pre-combining phase

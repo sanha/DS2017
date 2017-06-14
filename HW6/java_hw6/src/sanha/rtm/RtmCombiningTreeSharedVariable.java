@@ -41,7 +41,7 @@ public final class RtmCombiningTreeSharedVariable implements SharedVariable {
 
   private synchronized int getAndAddSynch(final int threadId,
                                           final int delta) {
-    final Stack<RtmNode> stack = new Stack();
+    final Stack<RtmNode> stack = new Stack<>();
     final RtmNode myLeaf = leaf[threadId/2];
 
     // Pre-combining phase

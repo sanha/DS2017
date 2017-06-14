@@ -25,7 +25,7 @@ public class Main {
 
     try {
       // Worm up
-      /*for (int i = 1; i <= maxThreadNum / 2; i += hopSize) {
+      for (int i = 1; i <= maxThreadNum / 2; i += hopSize) {
         if (rtm) {
           ExperimentUtils.throughputExperiment(
               ExperimentUtils.SharedVariableType.RTM_TREE,
@@ -49,7 +49,7 @@ public class Main {
               1000,
               100);
         }
-      }*/
+      }
 
       Files.createFile(Paths.get(treeThFileName));
       final BufferedWriter fw1 = new BufferedWriter(new FileWriter(treeThFileName, true));
